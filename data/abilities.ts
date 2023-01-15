@@ -5218,4 +5218,63 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 		rating: 3,
 		num: -4,
 	},
+
+	//Sylvania
+	packedice: {
+		name: "Packed Ice",
+		onSourceModifyDamage(damage, source, target, move) {
+			if (move.type === 'Fighting' || move.type === 'Rock' || move.type === 'Steel') {
+				this.debug('Packed Ice reduce');
+				return this.chainModify(0.5);
+			}
+		},
+		isBreakable: true,
+		num: -6001,
+	},
+	charred: {
+		name: "Charred",
+		num: -6002,
+		onModifyDamage(damage, source, target, move) {
+			if (move.type === 'Grass' && target.getMoveHitData(move).typeMod < 0) {
+				this.debug('Charred boost');
+				return this.chainModify(2);
+			}
+		},
+		onSourceModifyDamage(damage, source, target, move) {
+			if (move.type === 'Water') return this.chainModify(2);
+		},
+	},
+	steamrocket: {
+		name: "Steam Rocket",
+		num: -6003,
+		onModifyPriority(priority, pokemon, target, move) {
+			if (move?.category !== 'Status' && move.basePower <= 60 && move.type === 'Water') {
+				return priority + 1;
+			}
+		},
+		onSourceModifyDamage(damage, source, target, move) {
+			if (move.type === 'Grass') return this.chainModify(2);
+		},
+		isBreakable: true,
+	},
+	vampyrism: {
+		name: "Vampyrism",
+		num: -6004,
+		onBasePower(basePower, attacker, defender, move) {
+			if (move?.flags['heal'] && move.category !== "Status") {
+				this.debug('Vampyrism boost');
+				return this.chainModify(1.5);
+			}
+		},
+	},
+	boilover: {
+		onModifySpe(spe, pokemon) {
+			if (pokemon.status === 'brn') {
+				return this.chainModify(1.5);
+			}
+		},
+		name: "Boil Over",
+		rating: 2.5,
+		num: 95,
+	},
 };

@@ -5946,6 +5946,17 @@ export const Moves: {[moveid: string]: MoveData} = {
 			if (!this.runEvent('ChargeMove', attacker, defender, move)) {
 				return;
 			}
+
+			// In SwSh, Fly's animation leaks the initial target through a camera focus
+			// The animation leak target itself isn't "accurate"; the target it reveals is as if Fly weren't a charge movee
+			// (Fly, like all other charge moves, will actually target slots on its charging turn, relevant for things like Follow Me)
+			// We use a generic single-target move to represent this
+			if (this.gameType === 'doubles' || this.gameType === 'multi') {
+				const animatedTarget = attacker.getMoveTargets(this.dex.getActiveMove('aerialace'), defender).targets[0];
+				if (animatedTarget) {
+					this.hint(`${move.name}'s animation targeted ${animatedTarget.name}`);
+				}
+			}
 			attacker.addVolatile('twoturnmove', defender);
 			return null;
 		},
@@ -21588,5 +21599,25 @@ export const Moves: {[moveid: string]: MoveData} = {
 		target: "normal",
 		type: "Electric",
 		contestType: "Cool",
+	},
+
+	//Sylvania
+	slurryshot: {
+		num: -560,
+		accuracy: 95,
+		basePower: 100,
+		category: "Physical",
+		name: "Slurry Shot",
+		pp: 10,
+		flags: {contact: 1, protect: 1, mirror: 1, gravity: 1, distance: 1, nonsky: 1},
+		onEffectiveness(typeMod, target, type, move) {
+			return typeMod + this.dex.getEffectiveness('Rock', type);
+		},
+		priority: 0,
+		secondary: null,
+		target: "any",
+		type: "Ice",
+		zMove: {basePower: 170},
+		contestType: "Tough",
 	},
 };

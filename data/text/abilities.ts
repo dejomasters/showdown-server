@@ -2149,4 +2149,26 @@ export const AbilitiesText: {[k: string]: AbilityText} = {
 
 		activate: "  [POKEMON] extends [MOVE] by 2 turns!",
 	},
+
+	//Sylvania
+	packedice: {
+		name: "Packed Ice",
+		desc: "Fighting, Rock, & Steel moves do 0.5x damage."
+	},
+	charred: {
+		name: "Charred",
+		desc: "User's resisted Grass type moves do 2x damage. Incoming Water type moves do 2x damage.",
+	},
+	steamrocket: {
+		name: "Steam Rocket",
+		desc: "Water type moves 60 Base Power or less get +1 priority. Incoming Grass moves do 2x damage."
+	},
+	vampyrism: {
+		name: "Vampyrism",
+		desc: "Draining moves do 1.5x damage."
+	},
+	boilover: {
+		name: "Boil Over",
+		desc: "Speed is 1.5x when Burned."
+	}
 };
